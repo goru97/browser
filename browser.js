@@ -83,17 +83,12 @@ var browse = (function () {
             req.setHeader(k, header[k]);
         });
 
-        if (ops.body) {
-            if (ops.stringify == false) {
-                req.write(options.data);
-            } else {
-                req.write(ops.body);
-            }
-        }
+        if (ops.body || ops.data) req.write(ops.body);
         req.end();
         this.out.url = url;
     })
         .fail(function (e) {
+            console.ered(e);
             this.err = e;
             this.terminate();
         })
