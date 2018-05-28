@@ -59,7 +59,7 @@ var browse = (function () {
     $J('request', function (url, header, options) {
         var ops = u2r(url, options);
         if (ops.method == "POST") {
-            if (header["Content-Type"] == undefined) {
+            if (header["Content-Type"] === undefined) {
                 header["Content-Type"] = "application/x-www-form-urlencoded";
             }
             header["Content-Length"] = ops.body.length;
@@ -83,7 +83,13 @@ var browse = (function () {
             req.setHeader(k, header[k]);
         });
 
-        if (ops.body) req.write(ops.body);
+        if (ops.body) {
+            if (ops.stringify == false) {
+                req.write(options.data);
+            } else {
+                req.write(ops.body);
+            }
+        }
         req.end();
         this.out.url = url;
     })
